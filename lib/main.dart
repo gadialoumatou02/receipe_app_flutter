@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:recipe_app/repository/receipe_repository.dart';
+import 'package:recipe_app/repository/receipes_repository_dummy_impl.dart';
 import 'package:recipe_app/view/receipes_widget.dart';
 
 void main() {
+  GetIt.instance.registerSingleton<ReceipeRepository>(ReceipeRepositoryDummyImpl());
   runApp(const MyApp());
 }
 

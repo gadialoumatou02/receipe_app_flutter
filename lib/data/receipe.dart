@@ -4,7 +4,7 @@ class Receipe {
   int time_cook;
   int serving;
   String directions;
-  String  ingred_list;
+  List  ingred_list;
   String path_image;
 
   Receipe(this.name, this.time_prep,
