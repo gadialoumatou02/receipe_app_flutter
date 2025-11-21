@@ -12,7 +12,7 @@ class ReceipeRepositoryDummyImpl implements ReceipeRepository {
             "Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. "
             "Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. "
             "Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat.",
-        "C:/Users/gadji/AndroidStudioProjects/recipe_app/assets/images/simple-white-cake.png"
+        "assets/images/simple-white-cake.png"
     ),
     Receipe("Chocolate Cake",15, 25, 8,
         [("chocolate",200),("sugar",200),("butter",125),
@@ -21,7 +21,7 @@ class ReceipeRepositoryDummyImpl implements ReceipeRepository {
             "Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. "
             "Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. "
             "Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat.",
-        "C:/Users/gadji/AndroidStudioProjects/recipe_app/assets/images/chocolate-cake.jpg"
+        "assets/images/chocolate-cake.jpg"
     ),
     Receipe("Clafoutis",15, 25, 8,
         [("pear",6),("sugar",180),("butter",10),
@@ -30,7 +30,7 @@ class ReceipeRepositoryDummyImpl implements ReceipeRepository {
             "Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. "
             "Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. "
             "Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat.",
-        "C:/Users/gadji/AndroidStudioProjects/recipe_app/assets/images/clafoutis.jpg"
+        "assets/images/clafoutis.jpg"
     ),
 
   ];
