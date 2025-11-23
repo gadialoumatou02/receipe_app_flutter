@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:recipe_app/data/receipe.dart';
 import 'package:recipe_app/repository/receipe_repository.dart';
 import 'package:recipe_app/view/receipe_widget.dart';
 

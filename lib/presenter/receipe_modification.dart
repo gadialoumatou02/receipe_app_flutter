@@ -8,9 +8,16 @@ class RecipeModification {
   final ImagePicker _picker = ImagePicker();
 
   int serving;
+  int time_prep;
+  int time_cook;
+  List ingredients;
   File? pickedImage; // access files
 
-  RecipeModification(this.recipe) : serving = recipe.serving;
+  RecipeModification(this.recipe) :
+        serving = recipe.serving,
+        time_prep = recipe.time_prep,
+        time_cook = recipe.time_cook,
+        ingredients = recipe.ingred_list;
 
   // Function increase serving
   void increaseServing() {
@@ -22,6 +29,15 @@ class RecipeModification {
     if(serving > 0) serving--;
   }
 
+  // Fonction de tri
+  void sortByName(){
+    ingredients.sort((a,b) =>
+        a['name'].toLowerCase().compareTo(b['name'].toLowerCase()));
+  }
+  // Remove ingredient
+  void removeIngredient(int index) {
+      ingredients.removeAt(index);
+  }
   // Function modify image
   Future<void> pickNewImage() async {
     final XFile? file = await _picker.pickImage(
