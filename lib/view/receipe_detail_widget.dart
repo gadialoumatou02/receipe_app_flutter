@@ -148,14 +148,11 @@ class _ReceipeDetailWidgetState extends State<ReceipeDetailWidget> {
                       });
                     },
                     child: ClipRRect(
-                      child: modify.pickedImage != null
-                          ? Image.file(
-                        modify.pickedImage!,
-                        height: 200,
-                        fit: BoxFit.cover,
-                      )
-                          : Image.asset(
-                        widget.receipe.path_image,
+                      child: Image(
+                        image: modify.pickedImage != null
+                            ? FileImage(modify.pickedImage!)
+                            : AssetImage(widget.receipe.path_image) as ImageProvider,
+                        width: double.infinity,
                         height: 200,
                         fit: BoxFit.cover,
                       ),

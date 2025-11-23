@@ -43,17 +43,27 @@ class _EditReceipeWidgetState extends State<EditRecipeWidget> {
             padding: const EdgeInsets.all(16.0),
             children: [
               // Temps préparation
+              Text("Prep time",
+                style: TextStyle(fontSize: 12, color: Colors.black54,),
+              ),
+              const SizedBox(height: 4),
               TextFormField(initialValue: "${modify.time_prep}"),
               const SizedBox (height: 16),
               // Time cook
+              Text("Cook time",
+                style: TextStyle(fontSize: 12, color: Colors.black54,),
+              ),
               TextFormField(initialValue: "${modify.time_cook}"),
               const SizedBox (height: 16),
               // Serving
+              Text("Serving",
+                style: TextStyle(fontSize: 12, color: Colors.black54,),
+              ),
               TextFormField(initialValue: "${modify.serving}"),
               const SizedBox (height: 16),
               // Ingredients
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Ingredients",
                   style: TextStyle(
@@ -62,35 +72,91 @@ class _EditReceipeWidgetState extends State<EditRecipeWidget> {
                   ),
                   ),
                   const SizedBox(width: 15),
+
                   // Button checkbox
-                  Checkbox(value: sortByName,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          sortByName == value?? false;
-                          if (sortByName) {
-                            modify.sortByName();
-                          }
-                        });
-                      }),
-                  Text("Sort By Name",
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold
-                    ),
+                  Row(
+                    children: [
+                      Checkbox(
+                          value: sortByName,
+                          activeColor: Colors.deepPurple,
+                          checkColor: Colors.white,
+                          onChanged: (value) {
+                            setState(() {
+                              sortByName == value?? false;
+                                modify.sortByName();
+
+                            });
+                          }),
+                      const Text("Sort By Name",
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold
+                        ),
+                      )
+                    ],
                   )
                 ],
               ),
               const SizedBox(height: 15),
+              // Ingrdients
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: receipe.ingred_list.length,
                 itemBuilder: (context, index) {
-                  final ingredient = receipe.ingred_list[index];
-                  return IngredientViewWidget(ingredient: ingredient, onRemove: () {  },);
+                  return IngredientViewWidget(
+                    ingredient: modify.ingredients[index],
+                    onRemove: () {
+                      setState(() {
+                        modify.removeIngredient(index);
+                      });
+                    },);
                 },
-              )
+              ),
 
+              // Button adding ingredient
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30), // pilule
+                  ),
+                ),
+                onPressed: () {
+                  // ouvrir dialog d'ajout ou autre
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // petit cercle avec +
+                    Container(
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.add,
+                          size: 14,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const Text(
+                      "Add ingredient",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ]
         )
     );

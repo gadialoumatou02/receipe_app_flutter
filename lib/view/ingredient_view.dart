@@ -15,11 +15,12 @@ class IngredientViewWidget extends StatelessWidget {
           // name + qty
           Expanded(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.grey, // adapte la couleur si tu veux
-                  borderRadius: BorderRadius.circular(4),
-                ),
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade400,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -27,28 +28,22 @@ class IngredientViewWidget extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.black54,),
                     ),
                     const SizedBox(height: 4),
-                    Text(ingredient["qty"].toString(),
+                    TextFormField(initialValue:ingredient["qty"].toString(),
                       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600,),
                     ),
                     const SizedBox(width: 8),
-                    // Bouton rouge avec l'icône poubelle
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Material(
-                            color: Colors.red,
-                            shape: const CircleBorder(),
-                            child: IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.white, size: 18),
-                              onPressed: onRemove,
-                            )
-                        )
-                      ],
-                    )
                   ]
                 )
               )
-          )
+          ),
+          // Bouton rouge avec l'icône poubelle
+          FloatingActionButton(
+            heroTag: 'delete_${ingredient["name"]}', // tag différent par item
+            mini: true,
+            backgroundColor: Colors.red,
+            onPressed: onRemove,
+            child: const Icon(Icons.delete, color: Colors.white, size: 18),
+          ),
         ]
       )
     );
