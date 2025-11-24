@@ -148,6 +148,52 @@ class _EditReceipeWidgetState extends State<EditRecipeWidget> {
                 ),
                 onPressed: () {
                   // j'ajoute la fonction
+                  final nameController = TextEditingController();
+                  final qtyController = TextEditingController();
+
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Add ingredient"),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextField(
+                              controller: nameController,
+                              decoration: const InputDecoration(labelText: "Name"),
+                            ),
+                            TextField(
+                              controller: qtyController,
+                              decoration: const InputDecoration(labelText: "Quantity"),
+                              keyboardType: TextInputType.number,
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text("Cancel"),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              final name = nameController.text.trim();
+                              final qty = double.tryParse(qtyController.text) ?? 0;
+
+                              if (name.isNotEmpty) {
+                                setState(() {
+                                  modify.addIngredient(receipe, name, qty);
+                                });
+                                Navigator.pop(context);
+                              }
+                            },
+                            child: const Text("Add"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

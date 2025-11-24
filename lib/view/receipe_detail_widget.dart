@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:recipe_app/presenter/receipe_modification.dart';
+import 'package:recipe_app/view/image_modif_widget.dart';
 import '../data/receipe.dart';
 
 class ReceipeDetailWidget extends StatefulWidget {
   final Receipe receipe;
-  final void Function(int shift) shiftServing;
-  const ReceipeDetailWidget({super.key, required this.receipe, required this.shiftServing});
+  const ReceipeDetailWidget({super.key, required this.receipe});
 
   @override
   State<ReceipeDetailWidget> createState() => _ReceipeDetailWidgetState();
@@ -143,53 +143,8 @@ class _ReceipeDetailWidgetState extends State<ReceipeDetailWidget> {
             ),
             const SizedBox(height: 12),
 
-            // PLace of image. Using sizedbox to avoid overflow
-            SizedBox(
-              width: double.infinity,
-              child: Stack(
-                children: [
-                  // Image
-                  GestureDetector(
-                    onTap: () async {
-                      await modify.pickNewImage(receipe);
-                      setState(() {
-                      });
-                    },
-                    child: ClipRRect(
-                      child: Image(
-                        image: modify.pickedImage != null
-                            ? FileImage(modify.pickedImage!)
-                            : AssetImage(widget.receipe.path_image) as ImageProvider,
-                        width: double.infinity,
-                        height: 200,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  // Bouton modif image
-                  Positioned(
-                    bottom: 9,
-                    right: 9,
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: Colors.deepPurple,
-                        borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.image_outlined,
-                            color: Colors.white),
-                        onPressed: () async {
-                          await modify.pickNewImage(receipe);
-                          setState(() {});
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // PLace of image
+            ImageModifWidget(receipe: receipe),
 
             const SizedBox(height: 12),
             // PLace of list of ingredients
