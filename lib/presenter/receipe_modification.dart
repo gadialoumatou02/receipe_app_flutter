@@ -1,48 +1,90 @@
 import 'dart:io';
 
+import 'package:get_it/get_it.dart';
 import 'package:recipe_app/data/receipe.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:recipe_app/presenter/change_notify.dart';
+import 'package:recipe_app/repository/receipe_repository.dart';
 
-class RecipeModification {
-  final Receipe recipe;
+class RecipeModification extends RecipePresenter{
+  @override
+  List<Receipe> recipes = GetIt.instance<ReceipeRepository>().receipes;
+
   final ImagePicker _picker = ImagePicker();
-
-  int serving;
-  int time_prep;
-  int time_cook;
-  List ingredients;
   File? pickedImage; // access files
 
-  RecipeModification(this.recipe) :
-        serving = recipe.serving,
-        time_prep = recipe.time_prep,
-        time_cook = recipe.time_cook,
-        ingredients = recipe.ingred_list;
 
   // Function increase serving
-  void increaseServing() {
-    serving++;
+  @override
+  void increaseServing(Receipe recipe, int shift) {
+    recipe.serving+= shift;
+    notifyListeners();
   }
 
   // Function decrease serving
-  void decreaseServing() {
-    if(serving > 0) serving--;
+  void decreaseServing(Receipe recipe, int shift) {
+    if(shift > 0) {
+      recipe.serving += -shift;
+    }
+    notifyListeners();
+  }
+  // modif serving
+  @override
+  void setQuantity(Receipe recipe, int qty) {
+    recipe.serving = qty;
+    notifyListeners();
+  }
+  // modif time cook
+  @override
+  void setTimeCook(Receipe recipe, int time) {
+    recipe.time_cook = time;
+    notifyListeners();
+  }
+  // modif time prep
+  @override
+  void setTimePrep(Receipe recipe, int time) {
+    recipe.time_prep = time;
+    notifyListeners();
+  }
+
+  // Function modify image
+  @override
+  Future<void> pickNewImage(Receipe recipe) async {
+    final XFile? file = await _picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if(file == null) return;
+    pickedImage = File(file.path);
+    notifyListeners();
   }
 
   // Fonction de tri
-  void sortByName(){
-    ingredients.sort((a,b) =>
+  void sortByName(Receipe recipe){
+    recipe.ingred_list.sort((a,b) =>
         a['name'].toLowerCase().compareTo(b['name'].toLowerCase()));
+    notifyListeners();
+  }
+
+  // Modif ingredient qty
+  void modifIngQty(Receipe recipe, int index, double qty) {
+    recipe.ingred_list[index]["qty"] = qty;
+    notifyListeners();
   }
   // Remove ingredient
-  void removeIngredient(int index) {
-      ingredients.removeAt(index);
+  void removeIngredient(Receipe recipe, int index) {
+      recipe.ingred_list.removeAt(index);
+      notifyListeners();
   }
-  // Function modify image
-  Future<void> pickNewImage() async {
-    final XFile? file = await _picker.pickImage(
-        source: ImageSource.gallery,
-    );
-    pickedImage = File(file!.path);
+  // add ingredient
+  void addIngredient(Receipe recipe, String name, double qty) {
+    recipe.ingred_list.add({
+      'name':name,
+      "qty":qty,
+    });
+    notifyListeners();
   }
+
+
+
+
 }

@@ -4,8 +4,9 @@ import '../data/receipe.dart';
 class IngredientViewWidget extends StatelessWidget {
   final Map<String, dynamic> ingredient;
   final VoidCallback onRemove;
+  final ValueChanged<double> onModifQty;
 
-  const IngredientViewWidget({super.key, required this.ingredient, required this.onRemove});
+  const IngredientViewWidget({super.key, required this.ingredient, required this.onRemove, required this.onModifQty});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -18,20 +19,22 @@ class IngredientViewWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(12),
                   margin: const EdgeInsets.symmetric(vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade400,
+                    color: Colors.grey,
                     borderRadius: BorderRadius.circular(8),
                   ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(ingredient["name"],
-                      style: TextStyle(fontSize: 12, color: Colors.black54,),
-                    ),
-                    const SizedBox(height: 4),
                     TextFormField(initialValue:ingredient["qty"].toString(),
                       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600,),
+                      decoration: InputDecoration(label:Text(ingredient["name"])),
+                      onChanged: (value) {
+                        final v = double.tryParse(value);
+                        if (v != null) {
+                          onModifQty(v);}
+                      },
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 4),
                   ]
                 )
               )

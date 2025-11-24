@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:recipe_app/presenter/receipe_modification.dart';
 import '../data/receipe.dart';
 
@@ -16,7 +17,14 @@ class _ReceipeDetailWidgetState extends State<ReceipeDetailWidget> {
   // Function for state
   void initState() {
     super.initState();
-    modify = RecipeModification(widget.receipe);
+    modify = GetIt.instance<RecipeModification>();
+  }
+  // Give unity
+  String unity(name) {
+    if(name == "milk" || name=="liquid cream"){
+      return "cl";
+    }
+    return "g";
   }
   // Vue
   @override
@@ -75,7 +83,7 @@ class _ReceipeDetailWidgetState extends State<ReceipeDetailWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Text on the left
-                Text("Serving : ${modify.serving}"),
+                Text("Serving : ${receipe.serving}"),
                 const SizedBox(width: 30),
 
                 // Button  modify serving
@@ -94,7 +102,7 @@ class _ReceipeDetailWidgetState extends State<ReceipeDetailWidget> {
                         onPressed : receipe.serving > 0
                             ? () {
                           setState(() {
-                            modify.decreaseServing();
+                            modify.decreaseServing(receipe,1);
                           });
                         }
                         : null, // button desactivated
@@ -118,7 +126,7 @@ class _ReceipeDetailWidgetState extends State<ReceipeDetailWidget> {
                         visualDensity: VisualDensity.compact,
                         onPressed : () {
                           setState(() {
-                            modify.increaseServing();
+                            modify.increaseServing(receipe,1);
                           });
                         },
                         icon: Text ("+",
@@ -143,7 +151,7 @@ class _ReceipeDetailWidgetState extends State<ReceipeDetailWidget> {
                   // Image
                   GestureDetector(
                     onTap: () async {
-                      await modify.pickNewImage();
+                      await modify.pickNewImage(receipe);
                       setState(() {
                       });
                     },
@@ -173,7 +181,7 @@ class _ReceipeDetailWidgetState extends State<ReceipeDetailWidget> {
                         icon: const Icon(Icons.image_outlined,
                             color: Colors.white),
                         onPressed: () async {
-                          await modify.pickNewImage();
+                          await modify.pickNewImage(receipe);
                           setState(() {});
                         },
                       ),
@@ -204,7 +212,7 @@ class _ReceipeDetailWidgetState extends State<ReceipeDetailWidget> {
                     return Padding(
                         padding: const EdgeInsets.all(3),
                         child: Text(
-                          "${ingredient['name']} ${ingredient['qty']} g",
+                          "${ingredient['name']} ${ingredient['qty']} ${unity(ingredient['name'])}",
                         )
                     );
                   }).toList()

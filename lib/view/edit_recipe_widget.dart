@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../data/receipe.dart';
 import '../presenter/receipe_modification.dart';
@@ -22,7 +23,7 @@ class _EditReceipeWidgetState extends State<EditRecipeWidget> {
   @override
   void initState() {
     super.initState();
-    modify = RecipeModification(widget.receipe);
+    modify = GetIt.instance<RecipeModification>();
   }
 
   // Vue
@@ -43,23 +44,39 @@ class _EditReceipeWidgetState extends State<EditRecipeWidget> {
             padding: const EdgeInsets.all(16.0),
             children: [
               // Temps préparation
-              Text("Prep time",
-                style: TextStyle(fontSize: 12, color: Colors.black54,),
-              ),
-              const SizedBox(height: 4),
-              TextFormField(initialValue: "${modify.time_prep}"),
+              TextFormField(
+                  initialValue: receipe.time_prep.toString(),
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(label:Text("Prep time")),
+                  onChanged: (value) {
+                    final v = int.tryParse(value);
+                    if (v != null) {
+                      modify.setTimePrep(receipe, v);
+                      setState(() {});}}
+                  ),
               const SizedBox (height: 16),
               // Time cook
-              Text("Cook time",
-                style: TextStyle(fontSize: 12, color: Colors.black54,),
-              ),
-              TextFormField(initialValue: "${modify.time_cook}"),
+              TextFormField(
+                  initialValue: receipe.time_cook.toString(),
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(label:Text("Prep cook")),
+                  onChanged: (value) {
+                    final v = int.tryParse(value);
+                    if (v != null) {
+                      modify.setTimeCook(receipe, v);
+                      setState(() {});}}),
               const SizedBox (height: 16),
               // Serving
-              Text("Serving",
-                style: TextStyle(fontSize: 12, color: Colors.black54,),
-              ),
-              TextFormField(initialValue: "${modify.serving}"),
+              TextFormField(
+                  initialValue: receipe.serving.toString(),
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(label:Text("Serving")),
+                  onChanged: (value) {
+                    final v = int.tryParse(value);
+                    if (v != null) {
+                      modify.setQuantity(receipe, v);
+                      setState(() {});}
+                  }),
               const SizedBox (height: 16),
               // Ingredients
               Row(
@@ -82,8 +99,8 @@ class _EditReceipeWidgetState extends State<EditRecipeWidget> {
                           checkColor: Colors.white,
                           onChanged: (value) {
                             setState(() {
-                              sortByName == value?? false;
-                                modify.sortByName();
+                              sortByName = value?? false;
+                                modify.sortByName(receipe);
 
                             });
                           }),
@@ -105,12 +122,17 @@ class _EditReceipeWidgetState extends State<EditRecipeWidget> {
                 itemCount: receipe.ingred_list.length,
                 itemBuilder: (context, index) {
                   return IngredientViewWidget(
-                    ingredient: modify.ingredients[index],
+                    ingredient: receipe.ingred_list[index],
                     onRemove: () {
                       setState(() {
-                        modify.removeIngredient(index);
+                        modify.removeIngredient(receipe,index);
                       });
-                    },);
+                    },
+                    onModifQty: (qty) {
+                      setState(() {
+                        modify.modifIngQty(receipe, index, qty);
+                      });
+                  },);
                 },
               ),
 
@@ -125,7 +147,7 @@ class _EditReceipeWidgetState extends State<EditRecipeWidget> {
                   ),
                 ),
                 onPressed: () {
-                  // ouvrir dialog d'ajout ou autre
+                  // j'ajoute la fonction
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

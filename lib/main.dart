@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:recipe_app/data/receipe.dart';
+import 'package:recipe_app/presenter/receipe_modification.dart';
 import 'package:recipe_app/repository/receipe_repository.dart';
 import 'package:recipe_app/repository/receipes_repository_dummy_impl.dart';
 import 'package:recipe_app/view/edit_recipe_widget.dart';
@@ -9,6 +10,7 @@ import 'package:recipe_app/view/receipes_widget.dart';
 
 void main() {
   GetIt.instance.registerSingleton<ReceipeRepository>(ReceipeRepositoryDummyImpl());
+  GetIt.instance.registerSingleton<RecipeModification>(RecipeModification());
   runApp(const MyApp());
 }
 
@@ -20,14 +22,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Receipes',
+      title: 'Recipes',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
 
-      initialRoute: '/receipes',
+      initialRoute: '/recipes',
       routes: {
-        '/receipes': (context) => const ReceipesWidget(),
+        '/recipes': (context) => const ReceipesWidget(),
 
         // Route détail : on récupère la recette passée en arguments
         '/details': (context) {
